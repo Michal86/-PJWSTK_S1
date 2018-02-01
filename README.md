@@ -1,6 +1,6 @@
 ## Welcome!
 
-Hey Michał here.
+Hey, Michał here.
 
 
 ### PJWSTK created to keep my files in one place.
