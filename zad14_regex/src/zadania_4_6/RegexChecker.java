@@ -78,7 +78,7 @@ public class RegexChecker {
 
     }
 
-    // Displays wiadomosc only from specified day
+    // Displays wiadomosc only from specified day/month or [miesiac/dzien/rok]
     public void displayWiadomosc(int miesiac, int dzien, int rok){
         boolean found = false;
         try{
@@ -122,7 +122,7 @@ public class RegexChecker {
     public int getCounter(){
         return counter;
     }
-    // Displays wiadomosc only from specified day
+    // Displays wiadomosc concerning given ip
     public void displayWiadomoscIp(String ip){
         boolean found = false;
 
@@ -137,7 +137,7 @@ public class RegexChecker {
         }
     }
 
-    // Check if log in data is from the same day
+    // Check if log data is from the same day
     public boolean checkWiadomosc(Wiadomosc toCheck){
         boolean exists = false;
 
