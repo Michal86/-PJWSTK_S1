@@ -12,6 +12,18 @@
 -----------------------------------------------------------------------
 4. Dowolne liczby (całkowite, rzeczywiste).
    Przykłady liczb: -29.30, -12, -0.343536, 0.2, .2 (jako 0.2), 11, 13.14, -.5 (jako -0.5).
+-----------------------------------------------------------------------
+5. Dany jest plik tekstowy zawierający kod programu w Javie.
+   Napisać program, który czyta z kodu wszystkie wywołania metody
+   Math.max(double,double), w których jako argumenty występują
+   wyłącznie identyfikatory lub literały. Zapisać do pliku
+   wyjściowego, podając informacje o argumentach w/w wywołania.
+   Np. dla wywołania w kodzie:... m = Math.max(m , 4.5) ...informacja wyjściowa powinna być (m, 4.5).
+-----------------------------------------------------------------------
+6. Zbudować wyrażenie regularne, które wykryje te same słowa, które występują po sobie w danym tekście,
+   np. "mamy" w "Dziś mamy mamy weekend", "będzie" w "Jutro będzie będzie poniedziałek", ...
+-----------------------------------------------------------------------
+NOTE for the future -> WOULD BE BETTER TO CREATE ONE CLASS FOR REGEX AND EXTEND IT.
 */
 package zadania.regex.dodatkowe;
 
@@ -40,7 +52,7 @@ public class MainDodatki {
                     checkPlWords();
                 }
                 else if(answer.equals("4")){
-                    //===== EXERCISE 3 =====
+                    //===== EXERCISE 4 =====
                     checkNumber();
                     //just to test my code
                     double suma = 0.0;
@@ -50,6 +62,14 @@ public class MainDodatki {
                     System.out.println("Sum of the digits "+liczby);
                     System.out.println("is equal to "+ suma);
                 }
+                else if(answer.equals("5")) {
+                    //===== EXERCISE 5 =====
+                    checkFiles(1);
+                }
+                else if(answer.equals("6")) {
+                    //===== EXERCISE 6 =====
+                    checkFiles(2);
+                }
             }
             System.out.println("Bye!");
         }
@@ -57,6 +77,22 @@ public class MainDodatki {
             System.err.println(e);
         }
     }//END OF MAIN
+
+    //Using static methods, just to practice
+    static void checkFiles(int index) throws Exception {
+        if (index == 1){
+            FileOperations.handleFile("./src/zadania/regex/dodatkowe/mathMaxJava.txt");
+            MathMaxValidator validate = new MathMaxValidator(FileOperations.getStrBld());
+        }
+        else if(index ==2){
+            FileOperations.handleFile("./src/zadania/regex/dodatkowe/doubleWords.txt");
+            DoubleWordsValidator validate = new DoubleWordsValidator(FileOperations.getStrBld());
+        }
+        System.out.print("Do You want to display stored file string? [yes-> y /no-> any key]: ");
+        if ( reader.nextLine().equals("y") ){
+            FileOperations.display();
+        }
+    }
 
     static void checkNumber(){
         boolean repeat = true;
@@ -149,7 +185,7 @@ public class MainDodatki {
                 break;
             case 3:
                 word = "PL word";
-                statement = "> (2+ chars) [Alphabetical order]; e.g \"abc\", \"nOs\", \"bór\"";
+                statement = "> (2+ chars) [Alphabetical order]; e.g. \"abc\", \"nOs\", \"bór\"";
                 break;
             case 4:
                 word = "Number";
@@ -164,11 +200,13 @@ public class MainDodatki {
 
     }
     static void info(){
-        System.out.println("Select number [1-4] to validate: ");
+        System.out.println("Select number [1-5] to validate: ");
         System.out.print("[1]. Password\t");
-        System.out.println("[2]. [0,1] sequences\t");
+        System.out.println("[2]. [0,1] sequences");
         System.out.print("[3]. PL words with alphabetical letter order\t");
-        System.out.println("[4]. Number [real, integer]\t");
+        System.out.println("[4]. Number [real, integer]");
+        System.out.print("[5]. Finds inside the file Math.max() methods\t");
+        System.out.println("[6]. Checking for Doubled Words inside the file");
         System.out.print("[Exit]. Type \"end\"  -> ");
     }
 }

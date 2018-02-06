@@ -1,0 +1,43 @@
+Np. dla wywołania w kodzie: ... m = Math.max(m , 4.5)
+//=========================
+import java.lang.*;
+
+//Math.max(60984, 1000)=60984
+
+public class MathDemo {
+	
+   public static void main(String[] args) {
+
+      // get two integer numbers
+      int x = 60984;
+      int y = 1000;
+   
+      // print the larger number between x and y
+      System.out.println("Math.max(" + x + "," + y + ")=" + Math.max(x, y));
+   }
+}
+
+//=========================
+public class MathMaxExample {
+
+	public static void main(String[] args) {
+		System.out.print("Enter first value:");
+		Scanner scan = new Scanner(System.in);
+		String value1 = scan.nextLine();
+		System.out.print("Enter second value:");
+		String value2 = scan.nextLine();
+		scan.close();		
+
+		int a = Integer.parseInt(value1);
+		int b = Integer.parseInt(value2);		
+			
+		// get the result of max method
+		int result = Math.max(a,b);
+		System.out.print("Result of the operation:"+result);
+	}
+
+}
+//=========================
+Math.max(2,b);
+Math.max(a,3);
+Math.max(9.112,9.113);

@@ -1,0 +1,4 @@
+C. Zbudować wyrażenie regularne, które wykryje te same słowa, które występują po sobie w danym tekście, 
+np. "mamy" w "Dziś mamy mamy weekend", "będzie" w "Jutro będzie będzie poniedziałek", 
+Po piątku piątku mamy weekend.  W czasie weekendu weekendu będzie słonecznie. 
+Jednak było było deszczowo! Ale klapa klap...
