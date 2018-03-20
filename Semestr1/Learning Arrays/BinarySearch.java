@@ -1,5 +1,5 @@
 /*
-* BinarySearch.java wielkosc_tablicu szukana 
+* BinarySearch.java wielkosc_tablicy, szukana 
 * WYWOLANIE: java BinarySearch 11 15
 *
 * WYNIK DZIALANIA:
