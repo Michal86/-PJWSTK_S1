@@ -1,3 +1,5 @@
+package zad1;
+
 import java.util.Random;
 
 public class Mark2 implements Zbroja{
@@ -5,7 +7,8 @@ public class Mark2 implements Zbroja{
     private String model;
     private int predkosc;
     private int sila;
-    private int ilość;
+    protected int ilośćPocisków;
+    protected int wysokoscLotu;
 
 
     public Mark2(int predkosc, int sila, int ilosc){
@@ -17,7 +20,7 @@ public class Mark2 implements Zbroja{
 
     public void ostrzezeniePrzedOblodzeniem(){
         Random rand = new Random();
-        int wysokoscLotu = rand.nextInt(800)+1;
+        wysokoscLotu = rand.nextInt(800)+1;
 
         try {
             System.out.println("Wysokość lotu: "+wysokoscLotu+"m");
@@ -40,6 +43,6 @@ public class Mark2 implements Zbroja{
 
     @Override
     public void flary(int ilość) {
-        this.ilość = ilość;
+        this.ilośćPocisków = ilość;
     }
 }
