@@ -16,6 +16,7 @@ public class Main {
 
     //---
     static void stworzZbroje(ZbrojaFactory noweZbroje){
+        /* stwórz anonimową klasę wewnętrzną Mark1 */
         ZbrojaBuilder mark1 = new ZbrojaBuilder(){
             @Override
             public void latanie(int predkosc) {
