@@ -44,6 +44,7 @@ public class ZbrojaBuilder extends Zbroja implements Comparable<ZbrojaBuilder> {
         return model;
     }
 
+    //--- settery ---
     @Override
     public void latanie(int predkosc) {
         this.predkosc += predkosc;
