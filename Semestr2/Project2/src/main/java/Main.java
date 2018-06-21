@@ -13,8 +13,10 @@ import controller.Controller;
  *  -> Choose difficulty from 3 to 5 (Meaning i.e.: Picking 3 program creates 3 by 3 square map)
  *  -> Check saved records [I used JSON file to save and load previous rankings]
  *
- *  Additionally I implemented helper button [A* path finding algorithm] -> It still needs updates/rework
- *      as it's working slow for me (even with the Manhattan distance heuristic), and only found solutions for 3x3 puzzle game.
+ *  Additionally:
+ *      1. I implemented helper button [A* path finding algorithm] -> It still needs updates/rework
+ *         as it's working slow for me (even with the Manhattan distance heuristic), and only found solutions for 3x3 puzzle game.
+ *      2. TO_DO: add save/load Players profiles to FilesManager
  */
 
 public class Main extends Application {
