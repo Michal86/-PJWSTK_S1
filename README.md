@@ -2,18 +2,18 @@
 
 Hey, Michał here.
 
-###### PJWSTK created to keep my files in one place.
-> Projects from my two semester in College.
+### PJWSTK created to keep my files in one place.
+Projects from my two semester in College.
 
 
-#### Semester 1
+> Semester 1
  Java from **basics** to more more advanced Java **(Files/Regex)**. 
 
 
-### Semester 2
+> Semester 2
  **_Java 8 (with lambdas)_** through **Swing** to **JavaFX**.
 
-> Courseworks:
+#### Courseworks:
   - [x] Project 1 (Swing)  - Simple chat using MVC design. 
   * [Showcase](https://i.pinimg.com/originals/39/38/c4/3938c4f40eca24a745c602053acc0ac4.png)
   
@@ -24,5 +24,5 @@ Hey, Michał here.
 
 
 
-### Check also GameDev and Algorithms
+###### Check also GameDev and Algorithms
 My projects I wrote during free time.
