@@ -61,7 +61,6 @@ public class Astar {
                 for (int i = 0; i < loopSize; i++)
                 {
                     tmpNode = solutionPath.pop();
-                    //tmpNode.getCurState().printState();
                     System.out.println();
                     revMoves(tmpNode.getMove());
                 }
