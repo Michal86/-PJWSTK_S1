@@ -2,16 +2,19 @@
 
 Hey, Michał here.
 
-### PJWSTK created to keep my files in one place.
-Projects from my two semester in College.
+### PJWSTK created to keep my College Java files in one place.
+*Some projects from my college.*
 
 
-> Semester 1
- Java from **basics** to more more advanced Java **(Files/Regex)**. 
+> **Semester 1**
+
+ Java from **basics** to more advanced projects with **files/regex**. 
 
 
-> Semester 2
+> **Semester 2**
+
  **_Java 8 (with lambdas)_** through **Swing** to **JavaFX**.
+
 
 #### Courseworks:
   - [x] Project 1 (Swing)  - Simple chat using MVC design. 
