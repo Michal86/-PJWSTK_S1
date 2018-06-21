@@ -1,14 +1,14 @@
-## Welcome!
+# PJWSTK created to keep my College Java files in one place.
+*Some projects from my college.*
 
 Hey, Michał here.
 
-### PJWSTK created to keep my College Java files in one place.
-*Some projects from my college.*
-
+---
 
 > **Semester 1**
 
  Java from **basics** to more advanced projects with **files/regex**. 
+
 
 
 > **Semester 2**
@@ -29,6 +29,6 @@ Hey, Michał here.
 
 
 
-
+___
 ###### Check also GameDev and Algorithms
 My projects I wrote during free time.
