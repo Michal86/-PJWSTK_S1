@@ -32,7 +32,7 @@ public class Main extends Application {
             ViewManager viewManager = new ViewManager();
             primaryStage = viewManager.getMainStage();
             primaryStage.setTitle("Puzzle Game");
-            primaryStage.initStyle(StageStyle.DECORATED);
+            primaryStage.initStyle(StageStyle.TRANSPARENT);
             primaryStage.setResizable(false);
 
             //--- ADD CONTROLLER ---
