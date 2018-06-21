@@ -27,7 +27,6 @@ public class Display extends JPanel{
         this.add(textArea);
         updateTextArea("0.0");
         myFrame.getContentPane().add(this);
-        repaint();
     }
 
     public void updateTextArea(String txtUpdated) {
