@@ -25,7 +25,7 @@ public class PuzzleState implements State{
     }
     //==========================================
 
-    //--- Set ArrayList of the successors for that state ---
+    //--- Set LinkedList of the successors for that state ---
     @Override
     public LinkedList<State> genSuccessors(Moves move) {
         LinkedList<State> successors = new LinkedList<>();
@@ -84,7 +84,7 @@ public class PuzzleState implements State{
         return copied;
     }
 
-    //--- Compare current board vs State delivered---
+    //--- Compare current board vs State delivered ---
     @Override
     public boolean equals(State toCompare) {
         boolean equal = true;

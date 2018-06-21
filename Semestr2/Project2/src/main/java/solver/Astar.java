@@ -100,18 +100,6 @@ public class Astar {
                 queue.add(node);
         });
 
-
-        if (queue.size()%400000==0) {
-            Node tmp = queue.element();
-            tmp.getCurState().printState();
-
-            System.out.println("My queue :");
-            System.out.print("F(n): " + tmp.getFCost() + ", OutOfPlace: " + ((PuzzleState) tmp.getCurState()).getOutOfPlace());
-            //queue.forEach(n -> System.out.print(n.getFCost() + "->"));
-            System.out.println("\n==================================");
-
-        }
-
     }
 
     private static boolean checkRepeats(Node node){
