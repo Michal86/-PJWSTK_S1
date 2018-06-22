@@ -20,7 +20,7 @@ public class SettingScene {
     private AnchorPane          anchorPane;
     //-- Players --
     private ChoiceBox<Player>   choiceBox;
-    private Button              addButtonPlayer;
+    private MyButton            addButtonPlayer;
     private TextField           nickField;
     ImageView                   imgPlayer,
                                 imgImages,
@@ -88,11 +88,9 @@ public class SettingScene {
 
     //-- New nick field + button --
     private void addNickButton() {
-        addButtonPlayer = new Button();
-        addButtonPlayer.setPrefSize(80, 30);
-        addButtonPlayer.setStyle(BUTTON_IMAGE);
+        addButtonPlayer = new MyButton("addButton", 80, 34);
         addButtonPlayer.setLayoutX(getPositionX(imgPlayer) + 110);
-        addButtonPlayer.setLayoutY(getPositionY(imgPlayer) + 283);
+        addButtonPlayer.setLayoutY(getPositionY(imgPlayer) + 273);
         anchorPane.getChildren().add(addButtonPlayer);
     }
 
@@ -137,7 +135,7 @@ public class SettingScene {
         return nickField;
     }
 
-    public Button getAddButtonPlayer() {
+    public MyButton getAddButtonPlayer() {
         return addButtonPlayer;
     }
 
@@ -225,6 +223,4 @@ public class SettingScene {
         }
         return null;
     }
-
-
 }
