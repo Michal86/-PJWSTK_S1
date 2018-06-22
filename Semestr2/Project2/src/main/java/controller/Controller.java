@@ -8,6 +8,7 @@ import model.ModelManager;
 import model.Player;
 import solver.Astar;
 import view.*;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -157,16 +158,14 @@ public class Controller {
     }
 
     //--- PLAY ---
-    //--- * add mouse handler to images * ---
+    //- Add mouse handler to board images and Solver -
     private void handlePlayScene() {
         MySubScenes play = mySubScenesList.get("Play");
         int range = modelManager.getMapDifficulty();
         modelManager.setMapDifficulty(range);
+
         //=== TEST SOLVER ===
-        viewManager.getSolverButton().setOnAction( b -> {
-            boolean solutionFound = Astar.search(play.getPlayScene().getBoardState());
-            System.out.println("Solution found: " + solutionFound);
-        });
+        viewManager.getSolverButton().setOnAction( b -> checkForSolution() );
 
         //===================
         for (int i = 0; i < range; i++) {
@@ -178,6 +177,13 @@ public class Controller {
                         play.getPlayScene().swapImagesWithBlank(imgToHandle);
                         modelManager.getPickedPlayer().addMoves();
                         viewManager.updateMovesInfo(""+modelManager.getPickedPlayer().getMoves());
+
+                        if (modelManager.isSolutionFound()) {
+                            viewManager.displaySolutionMoves(
+                                    modelManager.getSolutionMoveFromList()
+                            );
+                        }
+                        //- Check current state vs GOAL -
                         if (checkGameState(play.getPlayScene().getBoardState(), modelManager.getBoard()))
                         {
                             //- Check score against hitlist records -
@@ -186,12 +192,26 @@ public class Controller {
                             moveMySubScene(mySubScenesList.get("Score"), "Score");
                             modelManager.getPickedPlayer().resetMoves();
                             modelManager.save();
+                            viewManager.removeSolutionBoxes();
                         }
                     }
                 });
             }
         }
 
+    }
+
+    private void checkForSolution(){
+        viewManager.removeSolutionBoxes();
+        boolean found = Astar.search(viewManager.getPlaySub().getPlayScene().getBoardState());
+        viewManager.setSolutionFound(found);
+        modelManager.setSolutionFound(found);
+        if (found) {
+            modelManager.setSolutionMovesList(Astar.getSolutionMoves());
+            viewManager.displaySolutionMoves(
+                    modelManager.getSolutionMoveFromList()
+            );
+        }
     }
 
     //--- Check game state ---
@@ -209,8 +229,10 @@ public class Controller {
         buttonList.forEach( btn -> btn.setOnAction(event -> {
             if (btn.getNAME().equals("Exit")) {
                 viewManager.quit();
-            } else
-                 moveMySubScene(mySubScenesList.get(btn.getNAME()), btn.getNAME());
+            } else {
+                moveMySubScene(mySubScenesList.get(btn.getNAME()), btn.getNAME());
+                viewManager.removeSolutionBoxes();
+            }
         }));
     }
 
