@@ -2,6 +2,7 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import solver.Moves;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -21,6 +22,10 @@ public class ModelManager {
     private ObservableList<Player> obsList;
     private Player          pickedPlayer;
     private boolean         isTaken;
+    //---
+    private List<Moves>     solutionMovesList;
+    private int             movesCounter  = 0;
+    private boolean         solutionFound = false;
 
     //==========================================
     public ModelManager() {
@@ -39,6 +44,28 @@ public class ModelManager {
 
     }
     //==========================================
+
+
+    public void setSolutionMovesList(List<Moves> solutionMovesList) {
+        this.solutionMovesList = solutionMovesList;
+        solutionFound = true;
+        movesCounter = 0;
+    }
+
+    public boolean isSolutionFound() {
+        return solutionFound;
+    }
+
+    public void setSolutionFound(boolean solutionFound) {
+        this.solutionFound = solutionFound;
+    }
+
+    public Moves getSolutionMoveFromList() {
+        if (movesCounter<solutionMovesList.size())
+            return solutionMovesList.get(movesCounter++);
+        else
+            return Moves.ROOT;
+    }
 
     //--- player ---
     public void addNewPlayer(String nick) {
