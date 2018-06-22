@@ -1,31 +1,37 @@
 package view;
 
-import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import solver.Moves;
 
-public class MovesImg {
-    private ImageView   img;
-    private Moves       move;
+import java.util.HashMap;
+import java.util.Map;
 
-    public MovesImg(ImageView img, Moves move) {
-        this.img  = img;
-        this.move = move;
+public class MovesImg {
+
+    private Map<Moves, Image> moveImageList;
+
+    public MovesImg() {
+        moveImageList = new HashMap<>();
+        initMoves();
+    }
+
+    //--- Init available moves ---
+    private void initMoves(){
+        for (Moves move: Moves.values()) {
+            moveImageList.put(move, getMoveImage(move.toString()));
+        }
     }
 
     //-- setters & getters ---
-    public Moves getMove() {
-        return move;
+    private Image getMoveImage(String name){
+       return new Image("/" + name + ".png");
     }
 
-    public void setMove(Moves move) {
-        this.move = move;
+    public  Map<Moves, Image> getMoveImageList() {
+        return moveImageList;
     }
 
-    public void setImg(ImageView img) {
-        this.img = img;
-    }
-
-    public ImageView getImg() {
-        return img;
+    public Image getMoveImage(Moves move){
+        return moveImageList.get(move);
     }
 }
