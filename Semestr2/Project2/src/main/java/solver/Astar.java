@@ -9,6 +9,8 @@ import java.util.*;
 
 public class Astar {
 
+    private static List<Moves> solutionMoves;
+
     public static boolean search(int[][] board){
         long searchCount = 1;
         boolean found = false;
@@ -48,8 +50,7 @@ public class Astar {
                 tmpNode = tmpNode.getParent();
                 found = true;
 
-                while (tmpNode.getParent() != null)
-                {
+                while (tmpNode.getParent() != null){
                     solutionPath.push(tmpNode);
                     tmpNode = tmpNode.getParent();
                 }
@@ -57,36 +58,38 @@ public class Astar {
 
                 // The size of the stack before looping through and emptying it.
                 int loopSize = solutionPath.size();
+                solutionMoves = new LinkedList<>();
 
-                for (int i = 0; i < loopSize; i++)
-                {
+                for (int i = 0; i < loopSize; i++){
                     tmpNode = solutionPath.pop();
-                    System.out.println();
-                    revMoves(tmpNode.getMove());
+                    if (tmpNode.getMove()!=Moves.ROOT)
+                        solutionMoves.add(revMoves(tmpNode.getMove()));
                 }
 
-                System.out.println("\nNumber of moves to finish: " + loopSize);
-                System.out.println("The number of nodes examined: " + searchCount);
                 return found;
             }
 
         }
-
-        System.out.println(searchCount);
-        System.out.println("Error! NO SOLUTION HAS BEEN FOUND!");
+        //System.out.println("Error! NO SOLUTION HAS BEEN FOUND!");
         return found;
     }
 
+    public static List<Moves> getSolutionMoves(){
+        return new LinkedList<>(solutionMoves);
+    }
+
     //--- Reverse Moves ---
-    private static void revMoves(Moves move){
+    private static Moves revMoves(Moves move){
         if (move==Moves.LEFT)
-            System.out.print("RIGHT");
+           return Moves.RIGHT;
         else if (move==Moves.RIGHT)
-            System.out.print("LEFT");
+            return Moves.LEFT;
         else if (move==Moves.UP)
-            System.out.print("DOWN");
+            return Moves.DOWN;
         else if (move==Moves.DOWN)
-            System.out.print("UP");
+            return Moves.UP;
+        else
+            return Moves.ROOT;
     }
 
     //--- Add nodes to my queue also nodes with same F(n) cost ---
