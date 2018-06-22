@@ -159,11 +159,7 @@ public class PlayScene {
             deck[r] = deck[i];
             deck[i] = temp;
         }
-        //=== DEBUG ===
-        System.out.println("=== NEW BOARD ===");
-        for (MyImgView aDeck : deck) System.out.print(aDeck.getPosition() + "|");
-        System.out.println("\n=================");
-        //=== ===== ===
+
         copy2DBoardTo1D(board, deck);
     }
 
