@@ -32,6 +32,7 @@ public class ViewManager {
     private ImageView       miniMap;
     private Text            nickTxt,
                             scoreTxt;
+    private MyButton        solverButton;
     //--- * ---
     private Controller      controller;
 
@@ -128,10 +129,11 @@ public class ViewManager {
     private void setMiniInfoPanel(String mapName){
         nickBox = new ScoreHolder("nick_box",160, 30,76,378);
         scoreBox = new ScoreHolder("score_box",160, 30,76,410);
-        mapBox = new ScoreHolder("miniMap_box",200, 200,56,459);
+        mapBox = new ScoreHolder("miniMap_box",200, 200,56,449);
         mainPane.getChildren().addAll(nickBox,scoreBox,mapBox);
         //--- set strings + map img ---
         setMiniMap(mapName);
+        setSolverButton("solve");
     }
 
     private Text txtHolder(String str, double positionX, double positionY) {
@@ -145,7 +147,6 @@ public class ViewManager {
     public void setInfoStrings(String nick, String moves){
         nickTxt  = txtHolder(nick, 112, nickBox.getLayoutY()+22);
         scoreTxt = txtHolder(moves, 112, scoreBox.getLayoutY()+22);
-
         mainPane.getChildren().addAll(nickTxt, scoreTxt);
     }
 
@@ -157,7 +158,18 @@ public class ViewManager {
         mainPane.getChildren().add(miniMap);
     }
 
-    //--- * add main background * ---
+    private void setSolverButton(String name){
+        solverButton = new MyButton(name, 160, 33);
+        solverButton.setLayoutX(nickBox.getLayoutX());
+        solverButton.setLayoutY((miniMap.getLayoutY()+miniMap.getFitWidth())+10);
+        mainPane.getChildren().add(solverButton);
+    }
+
+    public MyButton getSolverButton() {
+        return solverButton;
+    }
+
+    //--- Add main background ---
     private void createBackground() {
         Image myBg = new Image("/mainFrame.png", 1024, 768, false, true);
         BackgroundImage background = new BackgroundImage(
@@ -166,7 +178,6 @@ public class ViewManager {
         mainPane.setBackground(new Background(background));
     }
 
-    //--- getters & setters ---
     public void setController(Controller controller) {
         this.controller = controller;
     }
