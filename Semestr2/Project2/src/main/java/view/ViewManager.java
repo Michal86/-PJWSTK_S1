@@ -9,6 +9,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import solver.Moves;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,13 +28,13 @@ public class ViewManager {
     private MySubScenes     scoreSub;
     private int             difficulty;
     //--- mini info panel+miniMap ---
-    private ScoreHolder     nickBox,
-                            scoreBox,
-                            mapBox;
-    private ImageView       miniMap;
+    private ScoreHolder     nickBox, scoreBox,
+                            mapBox, movesBox, movesNotFoundBox;
+    private ImageView       miniMap, moveImg;
     private Text            nickTxt,
                             scoreTxt;
     private MyButton        solverButton;
+    private MovesImg        solutionMoveList;
     //--- * ---
     private Controller      controller;
 
@@ -163,10 +165,50 @@ public class ViewManager {
         solverButton.setLayoutX(nickBox.getLayoutX());
         solverButton.setLayoutY((miniMap.getLayoutY()+miniMap.getFitWidth())+10);
         mainPane.getChildren().add(solverButton);
+        setSolverNotFound();
+        setSolverMovesBox();
+    }
+
+    private void setSolverMovesBox(){
+        movesBox = new ScoreHolder("solverMoves_box",161, 36,542, 670);
+    }
+
+    private void setSolverNotFound(){
+        movesNotFoundBox = new ScoreHolder("solverNotFound_box",261, 60,492, 670);
+    }
+
+    public void setSolutionFound(boolean solutionFound){
+        if (solutionFound) {
+            mainPane.getChildren().add(movesBox);
+            createMoveImages();
+            }
+        else
+            mainPane.getChildren().add(movesNotFoundBox);
+    }
+
+    public void removeSolutionBoxes(){
+        mainPane.getChildren().remove(movesBox);
+        mainPane.getChildren().remove(movesNotFoundBox);
     }
 
     public MyButton getSolverButton() {
         return solverButton;
+    }
+
+    private void createMoveImages(){
+        solutionMoveList = new MovesImg();
+        moveImg = new ImageView();
+        displaySolutionMoves(Moves.ROOT);
+        mainPane.getChildren().add(moveImg);
+    }
+
+    public void displaySolutionMoves(Moves moveToDisplay) {
+        Image img = solutionMoveList.getMoveImage(moveToDisplay);
+        moveImg.setImage(img);
+        moveImg.setFitWidth(img.getWidth());
+        moveImg.setFitHeight(img.getHeight());
+        moveImg.setLayoutX(movesBox.getLayoutX()+93.5-(moveImg.getFitWidth()/2));
+        moveImg.setLayoutY(movesBox.getLayoutY()+29-(moveImg.getFitHeight()/2));
     }
 
     //--- Add main background ---
