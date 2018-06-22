@@ -23,7 +23,7 @@ Hey, Michał here. *You can find here some of my projects from college.*
 > Project 2 (JavaFX) - Puzzle Game (N Slider).
   
  1. Designed with MVC and a little bit of CSS style plus front-end in Inkscape.
- 2. _I implemented A* algorithm to solve puzzle, but it's in debug mode so no separate (visible) button provided yet._
+ 2. _I implemented A* algorithm to solve puzzle, but it's in debug mode (problem with finding solution->'GC overhead limit exceeded') so button "Solve" does NOT work all the time._
   
   * [Showcase](https://i.pinimg.com/originals/ee/66/d8/ee66d8f3b089615cb84d284704be641a.png)
 
