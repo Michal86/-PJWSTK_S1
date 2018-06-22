@@ -10,11 +10,12 @@ public class MyButton extends Button {
     private final String NAME;
     private boolean      isPressed;
 
+    //==========================================
     public MyButton(String name) {
-        this.NAME = name;
-        BTN_NORMAL = "-fx-background-color: transparent; -fx-background-image: url('/" + name.toLowerCase() + "3.png')";
-        BTN_HOOVER = "-fx-background-color: transparent; -fx-background-image: url('/" + name.toLowerCase() + "2.png')";
-        BTN_PRESSED = "-fx-background-color: transparent; -fx-background-image: url('/" + name.toLowerCase() + "1.png')";
+        this.NAME   = name;
+        BTN_PRESSED = "-fx-background-color: transparent; -fx-background-image: url('/"+name.toLowerCase()+"1.png')";
+        BTN_HOOVER  = "-fx-background-color: transparent; -fx-background-image: url('/"+name.toLowerCase()+"2.png')";
+        BTN_NORMAL  = "-fx-background-color: transparent; -fx-background-image: url('/"+name.toLowerCase()+"3.png')";
         setPrefWidth(240);
         setPrefHeight(80);
         setStyle(BTN_NORMAL);
@@ -22,7 +23,18 @@ public class MyButton extends Button {
         initButtonListeners();
     }
 
-    //--- ** ---
+    public MyButton(String name, int width, int height) {
+        this.NAME   = name;
+        BTN_PRESSED = "-fx-background-color: transparent; -fx-background-image: url('/" + name +"1.png')";
+        BTN_HOOVER  = "-fx-background-color: transparent; -fx-background-image: url('/" + name +"2.png')";
+        BTN_NORMAL  = "-fx-background-color: transparent; -fx-background-image: url('/"+ name +"3.png')";
+        setPrefWidth(width);
+        setPrefHeight(height);
+        setStyle(BTN_NORMAL);
+        initButtons();
+    }
+    //==========================================
+
     public void setButtonPressedStyle() {
         if (!isPressed) {
             setStyle(BTN_PRESSED);
@@ -63,6 +75,23 @@ public class MyButton extends Button {
         setOnMouseEntered(event -> setButtonHooverStyle());
         setOnMouseExited(event -> setButtonNormalStyle());
         setOnMousePressed(event -> setButtonPressedStyle());
+    }
+
+    //--- For buttons other than Menu ---
+    private void initButtons(){
+        setOnMouseEntered(event -> setButtonHooverStyle());
+        setOnMouseExited(event ->  setNormal());
+        setOnMousePressed(event -> setPressed());
+        setOnKeyPressed(event -> setPressed());
+        setOnKeyReleased(event ->  setNormal());
+    }
+
+    private void setPressed(){
+        setStyle(BTN_PRESSED);
+    }
+
+    private void setNormal(){
+        setStyle(BTN_NORMAL);
     }
 
 }
