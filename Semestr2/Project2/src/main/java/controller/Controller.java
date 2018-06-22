@@ -47,7 +47,6 @@ public class Controller {
         setScores(score, modelManager.getRecordFromTable(3));
         setScores(score, modelManager.getRecordFromTable(4));
         setScores(score, modelManager.getRecordFromTable(5));
-
     }
 
     private void checkWinnersTable(Player winner) {
@@ -164,9 +163,12 @@ public class Controller {
         int range = modelManager.getMapDifficulty();
         modelManager.setMapDifficulty(range);
         //=== TEST SOLVER ===
-        boolean check = Astar.search(play.getPlayScene().getBoardState());
+        viewManager.getSolverButton().setOnAction( b -> {
+            boolean solutionFound = Astar.search(play.getPlayScene().getBoardState());
+            System.out.println("Solution found: " + solutionFound);
+        });
+
         //===================
-        //---------------
         for (int i = 0; i < range; i++) {
             for (int j = 0; j < range; j++) {
                 MyImgView imgToHandle = play.getPlayScene().getBoardPiece(i, j);
@@ -177,9 +179,10 @@ public class Controller {
                         modelManager.getPickedPlayer().addMoves();
                         viewManager.updateMovesInfo(""+modelManager.getPickedPlayer().getMoves());
                         if (checkGameState(play.getPlayScene().getBoardState(), modelManager.getBoard()))
-                        {//do sth when win
+                        {
+                            //- Check score against hitlist records -
                             checkWinnersTable(modelManager.getPickedPlayer());
-                            //--- if (checkWinnersTable)
+                            //- Move to Score -
                             moveMySubScene(mySubScenesList.get("Score"), "Score");
                             modelManager.getPickedPlayer().resetMoves();
                             modelManager.save();
@@ -191,7 +194,7 @@ public class Controller {
 
     }
 
-    //--- check game state ---
+    //--- Check game state ---
     private boolean checkGameState(int[][] stateNow, int[][] toWin) {
         boolean won = true;
         for (int i = 0; i < toWin.length; i++) {
@@ -201,8 +204,7 @@ public class Controller {
         return won;
     }
 
-    //--- MAIN BUTTONS ---
-    //--- set mainButton handler method ---
+    //--- Set mainButton handler method ---
     private void handleButtonAction() {
         buttonList.forEach( btn -> btn.setOnAction(event -> {
             if (btn.getNAME().equals("Exit")) {
@@ -212,7 +214,7 @@ public class Controller {
         }));
     }
 
-    //--- to show/hide my subScenes ---
+    //--- To show/hide my subScenes ---
     private void moveMySubScene(MySubScenes ss, String btnName) {
         if (btnName.equals("Play")) {
             //--- updates ---
