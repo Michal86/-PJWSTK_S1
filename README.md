@@ -1,5 +1,6 @@
-# PJWSTK created to keep my College Java files in one place.
-Hey, Michał here. *You can find here some of my projects from college.*
+# PJWSTK
+Hey, Michał here. 
+*You can find here some of my projects from college.*
 
 
 
