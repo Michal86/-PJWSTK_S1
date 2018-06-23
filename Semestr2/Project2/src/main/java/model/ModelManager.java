@@ -210,10 +210,10 @@ public class ModelManager {
         hitlist.setHitlist("scores3x3", scores3x3);
         hitlist.setHitlist("scores4x4", scores4x4);
         hitlist.setHitlist("scores5x5", scores5x5);
-        System.out.println("--- SAVED ---");
+        //System.out.println("--- SAVED ---");
         String checkSaves = FilesManager.saveJson(hitlist.getHitlist());
-        System.out.println(checkSaves);
-        System.out.println("----------------------------");
+        //System.out.println(checkSaves);
+        //System.out.println("----------------------------");
     }
     private Hitlist initHitlist(){
         //Get my Map obj from JSON
