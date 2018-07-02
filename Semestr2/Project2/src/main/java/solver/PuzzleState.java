@@ -13,7 +13,7 @@ public class PuzzleState implements State{
     private int[][]       curBoard;
 
     //==========================================
-    public PuzzleState(int[][] board, Moves move){
+    protected PuzzleState(int[][] board, Moves move){
         curBoard = board;
         this.move = move;
         PUZZLE_SIZE = getBoardSize(curBoard);
@@ -35,7 +35,6 @@ public class PuzzleState implements State{
 
         //- Check if next move is available & not opposite to the one of the parent ---
         if ( isAvailable(x - 1, y) && move!=Moves.DOWN) {
-            //System.out.println("Parent: "+move +"!= Moves.DOWN");
             swapAndStore(new Point(x - 1, y), blank, successors, Moves.UP);
         }
 

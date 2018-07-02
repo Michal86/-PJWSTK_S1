@@ -1,9 +1,7 @@
 package solver;
 /*
- * A* algorithm - with heuristic (amount of pieces out of place vs goal) [Also implemented the Manhattan distance to my Node]
- * Sometimes it finds correct path in milli seconds but other time it creates few million nodes, and it still can't find solution + "JavaFX Application Thread" java.lang.OutOfMemoryError: GC overhead limit exceeded
- * It's not working as it's supposed to so I did put bound of searching until 1M Nodes
- * TO_DO: optimise and search for possible mistakes in PuzzleState class.
+ * A* algorithm - with heuristic the Manhattan distance [Also implemented amount of pieces out of place vs goal]
+  * It's not working but sometimes slow [5x5] so I did put bound of searching until 1.5M Nodes
  */
 import java.util.*;
 
@@ -18,7 +16,7 @@ public class Astar {
         Queue<Node> queue = new LinkedList<>();
         queue.add(root);
 
-        while (!queue.isEmpty() && !found && searchCount<1000000){
+        while (!queue.isEmpty() && !found && searchCount<1500000){
             Node tmpNode = queue.poll();
 
             if (!Objects.requireNonNull(tmpNode).getCurState().isGoal()){
