@@ -23,7 +23,7 @@ Hey, Michał here.
   
 > Project 2 (JavaFX) - Puzzle Game (N Slider).
   
- 1. Designed with MVC and a little bit of CSS style plus front-end in Inkscape.
+ 1. MVC design with a little bit of CSS style plus front-end in Inkscape.
  2. I implemented A* algorithm to solve puzzle. _It's a addition to test pathfinding algorithm with the Manhattan distance heuristic._
   
   * [Showcase](https://i.pinimg.com/originals/ee/66/d8/ee66d8f3b089615cb84d284704be641a.png)
