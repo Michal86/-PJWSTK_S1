@@ -17,7 +17,7 @@ public class ModelManager {
     //---
     private int             mapDifficulty;
     private String          pickedMap;
-    private int[][]         board;
+    private GameBoard       board;
     private List<Player>    playerList;
     private ObservableList<Player> obsList;
     private Player          pickedPlayer;
@@ -41,11 +41,10 @@ public class ModelManager {
         obsList = FXCollections.observableArrayList(playerList);
         //--- Init hitlist ---
         hitlist = initHitlist();
-
     }
     //==========================================
 
-
+    //=== Solutions methods ===
     public void setSolutionMovesList(List<Moves> solutionMovesList) {
         this.solutionMovesList = solutionMovesList;
         solutionFound = true;
@@ -67,7 +66,7 @@ public class ModelManager {
             return Moves.ROOT;
     }
 
-    //--- player ---
+    //=== Player methods ===
     public void addNewPlayer(String nick) {
         Player newPlayer = new Player(nick);
         playerList.add(newPlayer);
@@ -98,13 +97,8 @@ public class ModelManager {
         return playerList;
     }
 
-    //--- check if player exsists ---
-    public void setTaken(boolean status) {
+    private void setTaken(boolean status) {
         isTaken = status;
-    }
-
-    public boolean isTaken() {
-        return isTaken;
     }
 
     public void checkNicks(String newNick) {
@@ -115,23 +109,36 @@ public class ModelManager {
         });
     }
 
-    //- board -
-    public void setBoard(int size) {
-        board = new int[size][size];
-        int index = 0;
-
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                this.board[i][j] = index++;
-            }
-        }
+    // Check if players nick exists
+    public boolean isTaken() {
+        return isTaken;
     }
 
-    public int[][] getBoard() {
-        return board;
+    //=== BOARD ===
+    public void setBoard(int mapDifficulty){
+        board = new GameBoard(mapDifficulty);
     }
 
-    //- difficulty -
+    public Point getBoardPointToShuffle(){
+        return board.getPointToShuffle();
+    }
+
+    public void updateBoardState(int[][] stateNow){
+        board.setCurBoard(stateNow);
+    }
+
+    public boolean checkGameState() {
+        return board.isGoal();
+    }
+
+    // Check if shuffled pieces amount is at least size*3-2
+    public boolean isShuffleDone(){
+        int outplacedGoal = getMapDifficulty()*3-2;
+
+        return outplacedGoal<board.getOutOfPlace();
+    }
+
+    //--- difficulty ----
     public void setMapDifficulty(int difficulty) {
         mapDifficulty = difficulty;
         pickedPlayer.setDifficulty(difficulty);
@@ -141,7 +148,7 @@ public class ModelManager {
         return mapDifficulty;
     }
 
-    //- map name -
+    //=== MAP ===
     public String getPickedMap() {
         return pickedMap;
     }
@@ -154,7 +161,8 @@ public class ModelManager {
         return pickedPlayer.getMap();
     }
 
-    //--- check player score against records ---
+    //=== SCORES ===
+    //--- Check player score against records ---
     public boolean passed(Player toCheck) {
         boolean addScore = false;
         int index = 0;
@@ -204,7 +212,7 @@ public class ModelManager {
             return null;
     }
 
-    //--- serialization ---
+    //=== Serialization ===
     public void save(){
         hitlist.flushBeforeSave();
         hitlist.setHitlist("scores3x3", scores3x3);
