@@ -8,12 +8,12 @@ import model.Point;
 
 public class PlayScene {
 
-    private AnchorPane    anchorPane;
+    private AnchorPane    anchorPane;                   // main pane of PlayScene
     private String        mapPath;
     private Image         mapImage;
     private int           row, col;
-    private MyImgView[][] board;
-    private MyImgView     blankPiece;
+    private MyImgView[][] board;                        // board[][] with images & its numbers
+    private MyImgView     blankPiece;                   // my blank piece (w/o image)
     private int           size, freeSpaceX, freeSpaceY;
 
     //==========================================
@@ -24,38 +24,28 @@ public class PlayScene {
         mapPath = setMapPath(mapName);
         mapImage = new Image(mapPath);
         board = new MyImgView[row][col];
-
         //--- check diff=scene-map_size ---
         getFreeSpace(row, mapImage);
         size = getSize(mapImage, row);
         //--- set images on game board ---
         setImageOnBoard(row, col, mapImage);
-        addBoardToPane(row, col);
     }
-
     //==========================================
-    //--- to set mapPath --
-    public String setMapPath(String mapName) {
+
+    //--- To set mapPath ---
+    private String setMapPath(String mapName) {
         if (mapName.matches("[a-zA-Z0-9]+"))
             return mapPath = "/" + mapName + ".png";
         else
             return mapPath = "blank.png";
     }
 
-    //=== MOVING IMAGE PIECES ===
-    private void boardMove(int i, int j, int x, int y, MyImgView toCheck) {
-        board[i][j] = blankPiece;
-        board[x][y] = toCheck;
+    //--- Get Image from MyImgView ---
+    private ImageView getImage(MyImgView myImgView) {
+        return myImgView.getImg();
     }
 
-    public void swapImagesWithBlank(MyImgView moveFrom) {
-        double[][] tmpPositionXY = getImgPositions(moveFrom);
-        moveFrom.getImg().relocate(tmpPositionXY[1][0], tmpPositionXY[1][1]);
-        blankPiece.getImg().relocate(tmpPositionXY[0][0], tmpPositionXY[0][1]);
-
-        setBoardShadow();
-    }
-
+    //--- Get positions from moveFrom and blank piece ---
     private double[][] getImgPositions(MyImgView moveFrom) {
         double[][] tmpXY = new double[2][2];
         tmpXY[0][0] = getImage(moveFrom).getLayoutX();
@@ -66,23 +56,15 @@ public class PlayScene {
         return tmpXY;
     }
 
-    private ImageView getImage(MyImgView myImgView) {
-        return myImgView.getImg();
+    //--- Swap image with blank piece ---
+    public void swapImagesWithBlank(MyImgView moveFrom) {
+        double[][] tmpPositionXY = getImgPositions(moveFrom);
+        moveFrom.getImg().relocate(tmpPositionXY[1][0], tmpPositionXY[1][1]);
+        blankPiece.getImg().relocate(tmpPositionXY[0][0], tmpPositionXY[0][1]);
+
+        setBoardShadow();
     }
 
-    //--- CHECKS whether we can move clicked piece ---
-    public boolean isMovable(MyImgView toCheck) {
-        if (blankPiece.equals(toCheck)) //if blank is clicked
-            return false;
-        else {
-            Point point = getPiecePoint(toCheck);
-            if (point!=null)
-                return isNextToBlank(point.getX(), point.getY(), toCheck);
-            //debug();
-            else
-                return false;
-        }
-    }
     //--- Get piece coordinates ---
     private Point getPiecePoint(MyImgView toCheck){
         Point find;
@@ -95,6 +77,17 @@ public class PlayScene {
             }
         }
         return null;
+    }
+
+    //--- Move board pieces [x,y - points of blankPiece] ---
+    private void boardMove(int i, int j, int x, int y, MyImgView toMove) {
+        board[i][j] = blankPiece;
+        board[x][y] = toMove;
+    }
+
+    //--- Check if move is within my board bounds ---
+    private boolean isAvailable(int i, int j) {
+        return (i >= 0 && j >= 0 && i < row && j < col);
     }
 
     //--- Check if piece can be moved, so it's next to free space 'blank' ---
@@ -121,9 +114,27 @@ public class PlayScene {
             }
         return false;
     }
-    //--- Check if move is within my board bounds ---
-    private boolean isAvailable(int i, int j) {
-        return (i >= 0 && j >= 0 && i < row && j < col);
+
+    //--- CHECKS whether we can move clicked piece ---
+    public boolean isMovable(MyImgView toCheck) {
+        if (blankPiece.equals(toCheck)) //if blank is clicked
+            return false;
+        else {
+            Point point = getPiecePoint(toCheck);
+            if (point!=null)
+                return isNextToBlank(point.getX(), point.getY(), toCheck);
+            else
+                return false;
+        }
+    }
+
+    //--- SHUFFLING PROCESS --
+    public void shufflingMethod(Point move) {
+        MyImgView movingPiece = getBoardPiece(move.getX(), move.getY());
+        Point blank = getPiecePoint(blankPiece);
+        // swap pieces on board
+        swapImagesWithBlank(movingPiece);
+        boardMove(move.getX(), move.getY(), blank.getX(), blank.getY(), movingPiece);
     }
 
     //--- Get actual state of the board ---
@@ -135,38 +146,6 @@ public class PlayScene {
             }
         }
         return state;
-    }
-
-    //--- SHUFFLING PROCESS --
-    private MyImgView[] prepareDeck() {
-        int size = row * col;
-        MyImgView[] deck = new MyImgView[size];
-        //-------------------
-        for (int i = 0; i < row; i++)
-            for (int j = 0; j < col; j++)
-                deck[col * i + j] = board[i][j];
-
-        return deck;
-    }
-
-    private void shuffleBoard() {
-        MyImgView[] deck = prepareDeck();
-        int n = deck.length;
-
-        for (int i = 0; i < n; i++) {
-            int r = i + (int) (Math.random() * (n - i));
-            MyImgView temp = deck[r];
-            deck[r] = deck[i];
-            deck[i] = temp;
-        }
-
-        copy2DBoardTo1D(board, deck);
-    }
-
-    private void copy2DBoardTo1D(MyImgView[][] copyTo, MyImgView[] copyFrom) {
-        for (int i = 0; i < row; i++)
-            for (int j = 0; j < col; j++)
-                copyTo[i][j] = copyFrom[col * i + j];
     }
 
     //--- Add ImageView to my board ---
@@ -219,15 +198,31 @@ public class PlayScene {
         return imgBlank;
     }
 
-    //--- Add some effects ---
+    //=== Shadow Effects ===
     private void setShadowDrop(ImageView img) {
-        img.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 5, 5)");
+        img.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 5, 5)");
+    }
+
+    private void setShadowDown(ImageView img) {
+        img.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.0, 0, 5)");
+
+    }
+
+    private void setShadowRight(ImageView img) {
+        img.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 5, 0)");
+
+    }
+
+    private void setInnerShadow(ImageView img) {
+        img.setStyle("-fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 5, 5)");
+        img.setOpacity(0.85);
     }
 
     private void clearShadowDrop(ImageView img) {
         img.setStyle("-fx-effect: null");
     }
 
+    //--- Set shadow effects on board ---
     private void setBoardShadow() {
         for (int i = 0; i < row; i++) {
             if (i < row - 1) {
@@ -236,23 +231,26 @@ public class PlayScene {
                         if (j < col - 1)
                             clearShadowDrop(board[i][j].getImg());
                         else if (j==col-1)
-                            setShadowDrop(board[i][j].getImg());
+                            setShadowRight(board[i][j].getImg());
                     }
+                    else
+                        setInnerShadow(board[i][j].getImg());
                 }
-            } else {
-                for (int j = 0; j < col; j++)
+            } else if (i == row-1){
+                for (int j = 0; j < col-1; j++) {
                     if (board[i][j].getPosition() != 0)
-                        setShadowDrop(board[i][j].getImg());
-
+                        setShadowDown(board[i][j].getImg());
+                    else
+                        setInnerShadow(board[i][j].getImg());
+                }
+                if (board[row-1][col-1].getPosition() != 0)
+                    setShadowDrop(board[row-1][col-1].getImg());
             }
         }
     }
 
-    //--- Add images to my AnchorPane AND shuffle them ---
-    private void addBoardToPane(int row, int col) {
-        //TO_DO: do better shuffling and CHECK A* search algorithm to make solver for Player
-        // button with steps to solve
-        shuffleBoard();
+    //--- Add images to my AnchorPane ---
+    public void addBoardToPane() {
         double positionY = 0.0;
 
         for (int i = 0; i < row; i++) {
@@ -272,7 +270,7 @@ public class PlayScene {
         toMove.setLayoutY(positionY + freeSpaceY / 2);
     }
 
-    //---
+    //--- Calculate space left on Scene ---
     private void getFreeSpace(int row, Image mapImage) {
         freeSpaceX = (int) anchorPane.getWidth() - (row + (int) mapImage.getWidth());
         freeSpaceY = (int) anchorPane.getHeight() - (row + (int) mapImage.getHeight());
@@ -282,7 +280,7 @@ public class PlayScene {
         return ((int) img.getHeight()) / row;
     }
 
-    //---
+    //--- Clear Anchor ---
     protected void clearAnchor() {
         for (int i = 0; i < row; i++)
             for (int j = 0; j < col; j++)
