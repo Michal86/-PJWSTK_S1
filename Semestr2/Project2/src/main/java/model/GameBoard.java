@@ -96,7 +96,6 @@ public class GameBoard {
                 curBoard[i][j] = state[i][j];
 
         setOutOfPlace();
-        System.out.println("OOP: "+ getOutOfPlace());
     }
 
     public int[][] getCurBoard() {
