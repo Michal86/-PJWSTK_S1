@@ -127,7 +127,7 @@ public class ViewManager {
         miniMap.setCache(true);
     }
 
-    //--- set: nick, score, minimap ---
+    //--- Set: nick, score, miniMap ---
     private void setMiniInfoPanel(String mapName){
         nickBox = new ScoreHolder("nick_box",160, 30,76,378);
         scoreBox = new ScoreHolder("score_box",160, 30,76,410);
@@ -187,6 +187,7 @@ public class ViewManager {
     }
 
     public void removeSolutionBoxes(){
+        mainPane.getChildren().remove(moveImg);
         mainPane.getChildren().remove(movesBox);
         mainPane.getChildren().remove(movesNotFoundBox);
     }
