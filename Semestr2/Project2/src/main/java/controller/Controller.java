@@ -13,11 +13,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Controller {
 
     private ViewManager              viewManager;
     private ModelManager             modelManager;
+    //--- Helpers ---
     private List<MyButton>           buttonList;
     private Map<String, MySubScenes> mySubScenesList;
 
@@ -42,7 +44,7 @@ public class Controller {
     }
     //==========================================
 
-    //--- SCORES ---
+    //=== SCORES ===
     private void initializeScoreBoards() {
         MySubScenes score = mySubScenesList.get("Score");
         setScores(score, modelManager.getRecordFromTable(3));
@@ -60,6 +62,7 @@ public class Controller {
         }
     }
 
+    //- Set new score on specific board -
     private void setScores(MySubScenes score, List<Player> newList) {
         newList.forEach(p -> score.getScoreScene().updateView(
                 newList.indexOf(p), p.getDifficulty(),
@@ -67,8 +70,8 @@ public class Controller {
         );
     }
 
-    //--- SETTING ---
-    //- map picker -
+    //=== SETTING ===
+    //- Map picker -
     private void setPickMapList() {
         MySubScenes setting = mySubScenesList.get("Setting");
         MapPicker mapPicker = setting.getSettingScene().getMapPicker();
@@ -84,7 +87,7 @@ public class Controller {
         );
     }
 
-    //- add player -
+    //- Add player -
     private void handleSettingAddPlayer() {
         MySubScenes setting = mySubScenesList.get("Setting");
         setting.getSettingScene().getAddButtonPlayer().setOnAction(
@@ -141,7 +144,7 @@ public class Controller {
         );
     }
 
-    //- difficulty picker -
+    //- Difficulty picker -
     private void handleSettingOptionPicker() {
         MySubScenes setting = mySubScenesList.get("Setting");
 
@@ -157,17 +160,29 @@ public class Controller {
         );
     }
 
-    //--- PLAY ---
+    //=== PLAY ===
+    //- Shuffle board --
+    private void handleShuffling(){
+        while (!modelManager.isShuffleDone()) {
+            viewManager.getPlaySub()
+                    .getPlayScene().
+                    shufflingMethod(modelManager.getBoardPointToShuffle());
+            modelManager.updateBoardState(viewManager.getPlaySub().getPlayScene().getBoardState());
+        }
+    }
+
     //- Add mouse handler to board images and Solver -
     private void handlePlayScene() {
         MySubScenes play = mySubScenesList.get("Play");
+        AtomicBoolean playIsActive = new AtomicBoolean(true);
         int range = modelManager.getMapDifficulty();
         modelManager.setMapDifficulty(range);
-
-        //=== TEST SOLVER ===
-        viewManager.getSolverButton().setOnAction( b -> checkForSolution() );
-
-        //===================
+        // Shuffle Pieces and add to PlayScene
+        handleShuffling();
+        play.getPlayScene().addBoardToPane();
+        // Solver
+        viewManager.getSolverButton().setOnAction( b -> checkForSolution(playIsActive) );
+        //==============
         for (int i = 0; i < range; i++) {
             for (int j = 0; j < range; j++) {
                 MyImgView imgToHandle = play.getPlayScene().getBoardPiece(i, j);
@@ -183,9 +198,10 @@ public class Controller {
                                     modelManager.getSolutionMoveFromList()
                             );
                         }
+
                         //- Check current state vs GOAL -
-                        if (checkGameState(play.getPlayScene().getBoardState(), modelManager.getBoard()))
-                        {
+                        modelManager.updateBoardState(play.getPlayScene().getBoardState());
+                        if (modelManager.checkGameState()) {
                             //- Check score against hitlist records -
                             checkWinnersTable(modelManager.getPickedPlayer());
                             //- Move to Score -
@@ -193,6 +209,7 @@ public class Controller {
                             modelManager.getPickedPlayer().resetMoves();
                             modelManager.save();
                             viewManager.removeSolutionBoxes();
+                            playIsActive.set(false);
                         }
                     }
                 });
@@ -201,30 +218,24 @@ public class Controller {
 
     }
 
-    private void checkForSolution(){
-        viewManager.removeSolutionBoxes();
-        boolean found = Astar.search(viewManager.getPlaySub().getPlayScene().getBoardState());
-        viewManager.setSolutionFound(found);
-        modelManager.setSolutionFound(found);
-        if (found) {
-            modelManager.setSolutionMovesList(Astar.getSolutionMoves());
-            viewManager.displaySolutionMoves(
-                    modelManager.getSolutionMoveFromList()
-            );
+    //=== View Manager ===
+    //- Solver button pressed -
+    private void checkForSolution(AtomicBoolean activeButton){
+        if (activeButton.get()) {
+            viewManager.removeSolutionBoxes();
+            boolean found = Astar.search(viewManager.getPlaySub().getPlayScene().getBoardState());
+            viewManager.setSolutionFound(found);
+            modelManager.setSolutionFound(found);
+            if (found) {
+                modelManager.setSolutionMovesList(Astar.getSolutionMoves());
+                viewManager.displaySolutionMoves(
+                        modelManager.getSolutionMoveFromList()
+                );
+            }
         }
     }
 
-    //--- Check game state ---
-    private boolean checkGameState(int[][] stateNow, int[][] toWin) {
-        boolean won = true;
-        for (int i = 0; i < toWin.length; i++) {
-            for (int j = 0; j < toWin.length; j++)
-                if (stateNow[i][j] != toWin[i][j]) won = false;
-        }
-        return won;
-    }
-
-    //--- Set mainButton handler method ---
+    //- Set mainButton handler method -
     private void handleButtonAction() {
         buttonList.forEach( btn -> btn.setOnAction(event -> {
             if (btn.getNAME().equals("Exit")) {
@@ -236,8 +247,8 @@ public class Controller {
         }));
     }
 
-    //--- To show/hide my subScenes ---
-    private void moveMySubScene(MySubScenes ss, String btnName) {
+    //- To show/hide my subScenes -
+    private void moveMySubScene(MySubScenes sub, String btnName) {
         if (btnName.equals("Play")) {
             //--- updates ---
             modelManager.UpdatePlayerBeforePlay();
@@ -245,28 +256,28 @@ public class Controller {
             viewManager.updateNickInfo(modelManager.getPickedPlayer().getNick());
             viewManager.updateMovesInfo("0");
             viewManager.updateMiniMap(modelManager.getPickedMap());
-            ss.setPlaySceneComponents(modelManager.getMapDifficulty(), modelManager.getPickedMap());
-            ss.moveSubScene();
+            sub.setPlaySceneComponents(modelManager.getMapDifficulty(), modelManager.getPickedMap());
+            sub.moveSubScene();
             //--- Handle Play board ---
             handlePlayScene();
         } else {
-            ss.moveSubScene();
+            sub.moveSubScene();
         }
-        hideOtherSubScenes(ss, btnName);
+        hideOtherSubScenes(sub, btnName);
     }
 
-    private void hideOtherSubScenes(MySubScenes ss, String name) {
+    private void hideOtherSubScenes(MySubScenes sub, String name) {
         List<MySubScenes> tmpList = new LinkedList<>(mySubScenesList.values());
 
         tmpList.forEach(subScene -> {
-            if (!subScene.isNotDisplayed() && !subScene.equals(ss)) {
+            if (!subScene.isNotDisplayed() && !subScene.equals(sub)) {
                 subScene.moveSubScene();
                 setButtonsToNormal(name);
             }
         });
     }
 
-    //--- set not pressed buttons to normal ---
+    //- Set not pressed buttons to normal -
     private void setButtonsToNormal(String name) {
         buttonList.forEach(btn -> {
             if (!btn.getNAME().equals(name) && btn.isBtnPressed()) {
@@ -276,7 +287,6 @@ public class Controller {
         });
     }
 
-    //--- getters & setters ---
     private void setMySubScenesList(String name, MySubScenes subScene) {
         if (subScene != null)
             mySubScenesList.put(name, subScene);
