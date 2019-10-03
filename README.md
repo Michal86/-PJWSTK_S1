@@ -15,7 +15,6 @@ Hey, Michał here.
  **_Java 8 (with lambdas)_** through **Swing** to **JavaFX**.
 
 
-###### Courseworks:
 
 > Project 1 (Swing)  - Simple chat using MVC design. 
   * [Showcase](https://i.pinimg.com/originals/39/38/c4/3938c4f40eca24a745c602053acc0ac4.png)
@@ -30,6 +29,8 @@ Hey, Michał here.
 
 
 
-___
-###### Check also GameDev and Algorithms
-My projects I wrote during free time.
+---
+### **Semester 3**
+
+> Project TORrent like program.
+ 1. Sharing files using sockets + JavaFX.
