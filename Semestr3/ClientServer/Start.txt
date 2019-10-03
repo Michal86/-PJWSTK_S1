@@ -1,0 +1,5 @@
+
+java -Dfile.encoding=windows-1252 -jar E:\_PROJECT_\github\PJWSTK\Semestr3\ClientServer\out\artifacts\JavaFXApp\Proj1.jar "BOB"
+java -Dfile.encoding=windows-1252 -jar E:\_PROJECT_\github\PJWSTK\Semestr3\ClientServer\out\artifacts\JavaFXApp\Proj1.jar "Mike"
+java -Dfile.encoding=windows-1252 -jar E:\_PROJECT_\github\PJWSTK\Semestr3\ClientServer\out\artifacts\JavaFXApp\Proj1.jar "ALICE"
+java -Dfile.encoding=windows-1252 -jar E:\_PROJECT_\github\PJWSTK\Semestr3\ClientServer\out\artifacts\JavaFXApp\Proj1.jar "JOHN"
