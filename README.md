@@ -1,6 +1,6 @@
 # PJWSTK
 Hey, Michał here. 
-*You can find here some of my projects from college.*
+*You can find here some of my projects from university.*
 
 
 
